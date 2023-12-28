@@ -29,7 +29,7 @@ spring:
   # 타임리프 설정
   thymeleaf:
     cache: false
-    prefix: file:sre/main/resources/templates/
+    prefix: file:src/main/resources/templates/
 
   # 정적 자원 설정(CSS, JS, 이미지)
   web:

@@ -1,4 +1,4 @@
-package org.choongang.controllers.restcontroller;
+package org.choongang.restcontroller;
 
 import org.choongang.commons.exceptions.CommonException;
 import org.choongang.commons.rests.JSONData;

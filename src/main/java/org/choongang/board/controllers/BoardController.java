@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/boar")
+@RequestMapping("/board")
 @RequiredArgsConstructor
 public class BoardController {
     private final BoardDataRepository boardDataRepository;
@@ -19,7 +19,7 @@ public class BoardController {
     @ResponseBody
     @GetMapping("/test")
     public void test() {
-        BoardData data = boardDataRepository.findById(1L).orElse(null);
+        BoardData data = boardDataRepository.findById(3L).orElse(null);
         data.setSubject("(수정)제목");
         boardDataRepository.flush();
         

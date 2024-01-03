@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-// 앞에 Info가 들어가면, 조회에 관련된 서비스라는 뜻
 @Service
 @RequiredArgsConstructor
 public class MemberInfoService implements UserDetailsService {
@@ -18,13 +17,10 @@ public class MemberInfoService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        Member member = memberRepository.findByEmail(username)
-                                // 이메일로 조회
-                
-                        .orElseGet(() -> memberRepository.findByUserId(username)
-                                // 아이디로 조회
-                                
+        Member member = memberRepository.findByEmail(username) // 이메일 조회
+                .orElseGet(() -> memberRepository.findByUserId(username) // 아이디로 조회
                         .orElseThrow(() -> new UsernameNotFoundException(username)));
+
 
         return MemberInfo.builder()
                 .email(member.getEmail())

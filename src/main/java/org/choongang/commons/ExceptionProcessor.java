@@ -12,6 +12,7 @@ public interface ExceptionProcessor {
     default String errorHandler(Exception e, HttpServletResponse response, HttpServletRequest request, Model model) {
 
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR; // 500
+
         if (e instanceof CommonException) {
             CommonException commonException = (CommonException) e;
             status = commonException.getStatus();

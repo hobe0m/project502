@@ -16,9 +16,9 @@ public class MemberUtil {
     }
 
     public Member getMember() {
-            Member member = (Member) session.getAttribute("member");
+        Member member = (Member) session.getAttribute("member");
 
-            return member;
+        return member;
     }
 
     public static void clearLoginData(HttpSession session) {
@@ -27,4 +27,5 @@ public class MemberUtil {
         session.removeAttribute("NotBlank_password");
         session.removeAttribute("Global_error");
     }
+
 }

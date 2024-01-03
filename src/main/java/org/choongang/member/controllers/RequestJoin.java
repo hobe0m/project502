@@ -1,6 +1,6 @@
 package org.choongang.member.controllers;
 
-import jakarta.validation.constraints.AssertFalse;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -12,11 +12,11 @@ public class RequestJoin {
     private String email;
 
     @NotBlank
-    @Size(min = 6)
+    @Size(min=6)
     private String userId;
 
     @NotBlank
-    @Size(min = 8)
+    @Size(min=8)
     private String password;
 
     @NotBlank
@@ -25,6 +25,7 @@ public class RequestJoin {
     @NotBlank
     private String name;
 
-    @AssertFalse
+    @AssertTrue
     private boolean agree;
+
 }

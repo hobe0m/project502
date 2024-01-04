@@ -6,8 +6,6 @@ import jakarta.persistence.Id;
 import lombok.Data;
 import org.choongang.commons.entities.BaseMember;
 
-import java.time.LocalDateTime;
-
 @Data
 @Entity
 public class BoardData extends BaseMember {

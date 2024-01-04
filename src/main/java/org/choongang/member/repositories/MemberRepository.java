@@ -11,6 +11,7 @@ import java.util.Optional;
 public interface MemberRepository extends JpaRepository<Member, Long>, QuerydslPredicateExecutor<Member> {
     @EntityGraph(attributePaths = "authorities")
     Optional<Member> findByEmail(String email);
+
     @EntityGraph(attributePaths = "authorities")
     Optional<Member> findByUserId(String userId);
 

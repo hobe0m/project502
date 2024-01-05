@@ -7,7 +7,6 @@ import org.choongang.configs.FileProperties;
 import org.choongang.file.entities.FileInfo;
 import org.choongang.file.repositories.FileInfoRepository;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.security.web.firewall.FirewalledRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -68,7 +67,7 @@ public class FileUploadService {
 
             repository.saveAndFlush(fileInfo);
             /* 파일 정보 저장 E */
-            
+
             /* 파일 업로드 처리 S */
 
             long seq = fileInfo.getSeq();
@@ -83,14 +82,15 @@ public class FileUploadService {
 
                 /* 썸네일 이미지 처리 S */
                 if (fileType.indexOf("image/") != -1 && thumbsSize != null) {
-                    File thumbDir = new File(thumbPath + dir);
+                    File thumbDir = new File(thumbPath + (seq % 10L) + "/" + seq);
                     if (!thumbDir.exists()) {
                         thumbDir.mkdirs();
                     }
                     for (int[] sizes : thumbsSize) {
-                        String thumbFileName = sizes[0] + "_" + sizes[1] + "_" + fileName;
+                        String thumbFileName = sizes[0] + "_" + sizes[1] + "_" + seq + extension;
 
                         File thumb = new File(thumbDir, thumbFileName);
+
                         Thumbnails.of(uploadFile)
                                 .size(sizes[0], sizes[1])
                                 .toFile(thumb);

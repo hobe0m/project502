@@ -49,6 +49,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(c -> {
             c.requestMatchers("/mypage/**").authenticated() // 회원 전용
                     .requestMatchers("/admin/**").hasAnyAuthority("ADMIN", "MANAGER")
+                    // 풀면 ADMIN or MANAGET의 권한이 있는 회원을 찾는다.
                     .anyRequest().permitAll(); // 그 외 모든 페이지는 모두 접근 가능
         });
 

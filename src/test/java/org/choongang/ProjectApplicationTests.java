@@ -24,12 +24,21 @@ class ProjectApplicationTests {
 	@Test @Disabled
 	void contextLoads() {
 		Member member = memberRepository.findByUserId("user01").orElse(null);
-
+		
+		// ADMIN 권한을 부여해주는 코드
 		Authorities authorities = new Authorities();
 		authorities.setMember(member);
 		authorities.setAuthority(Authority.ADMIN);
 
 		authoritiesRepository.saveAndFlush(authorities);
+
+		// 기존에 있는 사용자를 수정하는 코드
+		/*
+		member.setName("(수정)사용자01");
+		memberRepository.saveAndFlush(member);
+		*/
+
 	}
+
 
 }

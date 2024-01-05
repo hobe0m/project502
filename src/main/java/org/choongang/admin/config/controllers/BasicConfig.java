@@ -9,7 +9,4 @@ public class BasicConfig {
     private String siteKeywords = "";
     private int cssJsVersion = 1;
     private String joinTerms = "";
-    // 썸네일 추가
-    private String thumbSize = "";
-
 }

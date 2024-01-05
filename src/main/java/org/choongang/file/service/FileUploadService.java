@@ -1,6 +1,8 @@
 package org.choongang.file.service;
 
 import lombok.RequiredArgsConstructor;
+import net.coobird.thumbnailator.Thumbnails;
+import org.choongang.commons.Utils;
 import org.choongang.configs.FileProperties;
 import org.choongang.file.entities.FileInfo;
 import org.choongang.file.repositories.FileInfoRepository;
@@ -23,6 +25,8 @@ public class FileUploadService {
 
     private final FileProperties fileProperties;
     private final FileInfoRepository repository;
+    private final FileInfoService infoService;
+    private final Utils utils;
 
     public List<FileInfo>
     upload(MultipartFile[] files, String gid, String location) {
@@ -33,11 +37,13 @@ public class FileUploadService {
 
         gid = StringUtils.hasText(gid) ? gid : UUID.randomUUID().toString();
 
-        // 파일 업로드 시 기본 경로
-        String uploadPath = fileProperties.getPath();
+        String uploadPath = fileProperties.getPath(); // 파일 업로드 시 기본 경로
 
-        // 업로드 성공 파일 정보 목록
-        List<FileInfo> uploadedFiles = new ArrayList<>();
+        String thumbPath = uploadPath + "thumbs/";  // 썸네일 업로드 기본 경로
+
+        List<int[]> thumbsSize = utils.getThumbsSize();    // 썸네일 사이즈
+
+        List<FileInfo> uploadedFiles = new ArrayList<>();  // 업로드 성공 파일 정보 목록
 
         for (MultipartFile file : files) {
 
@@ -74,6 +80,28 @@ public class FileUploadService {
             File uploadFile = new File(dir, seq + extension); // 증감번호.확장자 형태
             try {
                 file.transferTo(uploadFile);
+
+                /* 썸네일 이미지 처리 S */
+                if (fileType.indexOf("image/") != -1 && thumbsSize != null) {
+                    File thumbDir = new File(thumbPath + dir);
+                    if (!thumbDir.exists()) {
+                        thumbDir.mkdirs();
+                    }
+                    for (int[] sizes : thumbsSize) {
+                        String thumbFileName = sizes[0] + "_" + sizes[1] + "_" + fileName;
+
+                        File thumb = new File(thumbDir, thumbFileName);
+                        Thumbnails.of(uploadFile)
+                                .size(sizes[0], sizes[1])
+                                .toFile(thumb);
+                    }
+
+                }
+
+                /* 썸네일 이미지 처리 E */
+
+                infoService.addFileInfo(fileInfo); // 파일 추가 정보 처리
+
                 uploadedFiles.add(fileInfo); // 업로드 성공 시 파일 정보 추가
 
             } catch (IOException e) {
@@ -85,5 +113,19 @@ public class FileUploadService {
         }
 
         return uploadedFiles;
+    }
+
+    /**
+     * 업로드 완료 처리
+     * @param gid
+     */
+    public void processDone(String gid) {
+        List<FileInfo> files = repository.findByGid(gid);
+        if (files == null) {
+            return;
+        }
+
+        files.forEach(file -> file.setDone(true));
+        repository.flush();
     }
 }

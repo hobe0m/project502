@@ -5,12 +5,14 @@ import org.choongang.configs.FileProperties;
 import org.choongang.file.entities.FileInfo;
 import org.choongang.file.repositories.FileInfoRepository;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.security.web.firewall.FirewalledRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,7 +33,11 @@ public class FileUploadService {
 
         gid = StringUtils.hasText(gid) ? gid : UUID.randomUUID().toString();
 
-        String uploadPath = fileProperties.getPath(); // 파일 업로드 시 기본 경로
+        // 파일 업로드 시 기본 경로
+        String uploadPath = fileProperties.getPath();
+
+        // 업로드 성공 파일 정보 목록
+        List<FileInfo> uploadedFiles = new ArrayList<>();
 
         for (MultipartFile file : files) {
 
@@ -65,14 +71,19 @@ public class FileUploadService {
                 dir.mkdir();
             }
 
-            File uploadFile = new File(dir, seq + "." + extension); // 증감번호.확장자 형태
+            File uploadFile = new File(dir, seq + extension); // 증감번호.확장자 형태
             try {
                 file.transferTo(uploadFile);
+                uploadedFiles.add(fileInfo); // 업로드 성공 시 파일 정보 추가
+
             } catch (IOException e) {
                 e.printStackTrace();
+                repository.delete(fileInfo); // 업로드 실패 시 파일 정보 제거
+                repository.flush();
             }
             /* 파일 업로드 처리 E */
         }
-        return null; // 임시
+
+        return uploadedFiles;
     }
 }

@@ -36,6 +36,9 @@ public class FileInfo extends BaseMember {
     @Column(length = 30)
     private String extension; // 확장자
 
-    private boolean done; // 작업의 완료 상태를 확인할 수 있게 해준다.
+    @Column(length = 65)
+    private String filetype; // 파일 타입
+
+    private boolean done; // 작업의 완료 상태를 확인(안쓰는 건 삭제, 완료한 건 올리기)할 수 있게 해준다.
 
 }

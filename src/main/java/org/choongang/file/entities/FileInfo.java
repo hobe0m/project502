@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.choongang.commons.entities.BaseMember;
 
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -43,6 +44,13 @@ public class FileInfo extends BaseMember {
     private String filePath; // 서버에 실제로 올라간 경로
     
     private String  fileUrl; // 브라우저 주소창에 입력해서 접근할 수 있는 경로
+
+    @Transient
+    private List<String> thumbsPath; // 썸네일 이미지 경로
+
+    @Transient
+    private List<String> thumbUrl; // 브라우저 주소창에 입력해서 접근할 수 있는 경로
+
 
     private boolean done; // 작업의 완료 상태를 확인(안쓰는 건 삭제, 완료한 건 올리기)할 수 있게 해준다.
 

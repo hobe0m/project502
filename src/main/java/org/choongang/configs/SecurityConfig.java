@@ -50,7 +50,7 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(c -> {
             c.requestMatchers("/mypage/**").authenticated() // 회원 전용
-                    .requestMatchers("/admin/**").hasAnyAuthority("ADMIN", "MANAGER")
+                    //.requestMatchers("/admin/**").hasAnyAuthority("ADMIN", "MANAGER")
                     .anyRequest().permitAll(); // 그 외 모든 페이지는 모두 접근 가능
         });
 

@@ -32,7 +32,7 @@ public class FileInfo extends BaseMember {
     private String location; // 하나의 그룹 안에서 위치를 확인해 그룹 내 파일들을 구분할 수 있게 해준다.
 
     @Column(length = 80) // length 80이면 한글은 26자 정도(1/3)
-    private String filename; // 원래 올렸던 파일의 이름
+    private String fileName; // 원래 올렸던 파일의 이름
 
     @Column(length = 30)
     private String extension; // 확장자

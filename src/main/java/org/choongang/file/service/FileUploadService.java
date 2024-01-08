@@ -65,7 +65,7 @@ public class FileUploadService {
             FileInfo fileInfo = FileInfo.builder()
                     .gid(gid)
                     .location(location)
-                    .filename(fileName)
+                    .fileName(fileName)
                     .extension(extension)
                     .filetype(fileType)
                     .build();

@@ -74,7 +74,7 @@ public class Pagination {
          *      &로 문자열 분리
          *      { "orderStatus=CASH", "name=....", "page=2" }
          */
-        String baseURL = "";
+        String baseURL = "?";
         if (request != null) {
             String queryString = request.getQueryString();
             if (StringUtils.hasText(queryString)) {
@@ -106,7 +106,7 @@ public class Pagination {
         // 0 : 페이지 번호, 1 : 페이지 URL - ?page=페이지 번호
 
         return IntStream.rangeClosed(firstRangePage, lastRangePage)
-                .mapToObj(p -> new String[] { String.valueOf(p), baseURL + "?page=" + p})
+                .mapToObj(p -> new String[] { String.valueOf(p), baseURL + "page=" + p})
                 .toList();
 
     }

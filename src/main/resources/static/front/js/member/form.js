@@ -1,6 +1,5 @@
-
 /**
-* 파일 업로드 후 후속 처리 함수
+* 파일 업로 후 후속 처리 함수
 *
 * @params files : 업로드 한 파일 정보 목록
 */
@@ -17,12 +16,13 @@ function callbackFileUpload(files) {
     const seq = file.seq;
 
     html = html.replace(/\[seq\]/g, seq)
-              .replace(/\[imageUrl\]/g, imageUrl);
+                .replace(/\[imageUrl\]/g, imageUrl);
 
     const domParser = new DOMParser();
     const dom = domParser.parseFromString(html, "text/html");
 
-    const  imageTplEl = dom.querySelector(".image1_tpl_box")
+    const imageTplEl = dom.querySelector(".image1_tpl_box");
+
 
     const profileImage = document.getElementById("profile_image");
     profileImage.innerHTML = "";
@@ -35,11 +35,7 @@ function callbackFileUpload(files) {
 *
 * @param seq : 파일 등록 번호
 */
-
 function callbackFileDelete(seq) {
     const fileEl = document.getElementById(`file_${seq}`);
     fileEl.parentElement.removeChild(fileEl);
 }
-
-
-

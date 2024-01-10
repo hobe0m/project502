@@ -21,7 +21,7 @@ public class FileDeleteService {
 
     private final FileInfoService infoService;
     private final MemberUtil memberUtil;
-    private final FileInfoRepository  repository;
+    private final FileInfoRepository repository;
 
     public void delete(Long seq) {
         FileInfo data = infoService.get(seq);
@@ -29,23 +29,23 @@ public class FileDeleteService {
         // 파일 삭제 권한 체크
         Member member = memberUtil.getMember();
         String createdBy = data.getCreatedBy();
-        if (StringUtils.hasText(createdBy) && (!memberUtil.isLogin() && (!memberUtil.isAdmin() && StringUtils.hasText(createdBy)
-            && !createdBy.equals(member.getUserId()))))  {
-
+        if (StringUtils.hasText(createdBy) && (
+                !memberUtil.isLogin() || (!memberUtil.isAdmin() && StringUtils.hasText(createdBy)
+                        && !createdBy.equals(member.getUserId())))) {
             throw new UnAuthorizedException(Utils.getMessage("Not.your.file", "errors"));
         }
-
 
         File file = new File(data.getFilePath());
         if (file.exists()) file.delete();
 
         List<String> thumbsPath = data.getThumbsPath();
-        if(thumbsPath != null) {
+        if (thumbsPath != null) {
             for (String path : thumbsPath) {
-                File thumbsFile = new File(path);
-                if(thumbsFile.exists()) thumbsFile.delete();
+                File thumbFile = new File(path);
+                if (thumbFile.exists()) thumbFile.delete();
             }
         }
+
         repository.delete(data);
         repository.flush();
     }
@@ -55,11 +55,12 @@ public class FileDeleteService {
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(fileInfo.gid.eq(gid));
 
-        if(StringUtils.hasText(location)) {
+        if (StringUtils.hasText(location)) {
             builder.and(fileInfo.location.eq(location));
         }
 
         List<FileInfo> items = (List<FileInfo>)repository.findAll(builder);
+
         items.forEach(i -> delete(i.getSeq()));
     }
 

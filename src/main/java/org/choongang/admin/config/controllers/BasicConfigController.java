@@ -26,7 +26,7 @@ public class BasicConfigController implements ExceptionProcessor {
 
     @ModelAttribute("pageTitle")
     public String getPageTitle() {
-        return "기본 설정";
+        return "기본설정";
     }
 
     @GetMapping
@@ -42,12 +42,10 @@ public class BasicConfigController implements ExceptionProcessor {
     @PostMapping
     public String save(BasicConfig config, Model model) {
 
-        saveService.save("basic",config);
+        saveService.save("basic", config);
 
-        model.addAttribute("message","저장되었습니다.");
+        model.addAttribute("message", "저장되었습니다.");
 
         return "admin/config/basic";
     }
-
-
 }

@@ -12,12 +12,11 @@ public class ConfigDeleteService {
 
     public void delete(String code) {
         Configs config = repository.findById(code).orElse(null);
-        if(config == null) {
+        if (config == null) {
             return;
         }
 
         repository.delete(config);
         repository.flush();
     }
-
 }

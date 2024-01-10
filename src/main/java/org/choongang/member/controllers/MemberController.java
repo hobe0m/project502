@@ -4,14 +4,15 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.choongang.commons.ExceptionProcessor;
 import org.choongang.commons.Utils;
-import org.choongang.member.MemberUtil;
-import org.choongang.member.entities.Member;
 import org.choongang.member.service.JoinService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +33,7 @@ public class MemberController implements ExceptionProcessor {
     }
 
     @PostMapping("/join")
-    public String joinPs(@Valid RequestJoin form, Errors errors, Model model) {
+    public String joinPs(@Valid RequestJoin form, Errors errors,Model model) {
         commonProcess("join", model);
 
         joinService.process(form, errors);
@@ -65,7 +66,6 @@ public class MemberController implements ExceptionProcessor {
         } else if (mode.equals("join")) {
             addCommonScript.add("fileManager");
             addScript.add("member/form");
-
         }
 
         model.addAttribute("pageTitle", pageTitle);

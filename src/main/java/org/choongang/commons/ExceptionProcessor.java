@@ -2,6 +2,7 @@ package org.choongang.commons;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.choongang.commons.exceptions.AlertBackException;
 import org.choongang.commons.exceptions.AlertException;
 import org.choongang.commons.exceptions.CommonException;
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 public interface ExceptionProcessor {
+
 
     @ExceptionHandler(Exception.class)
     default String errorHandler(Exception e, HttpServletResponse response, HttpServletRequest request, Model model) {
@@ -24,13 +26,13 @@ public interface ExceptionProcessor {
 
         e.printStackTrace();
 
-        if(e instanceof AlertException) { // 자바스크립트 ALert 형태로 응답
-            String script = String.format("alert('%s')", e.getMessage());
+        if (e instanceof AlertException) { // 자바스크립트 Alert형태로 응답
+            String script = String.format("alert('%s');", e.getMessage());
 
-        if(e instanceof AlertException) { // history.back(); 실행
-            script += "history.back();";
-        }
-            
+            if (e instanceof AlertBackException) { // history.back(); 실행
+                script += "history.back();";
+            }
+
             model.addAttribute("script", script);
             return "common/_execute_script";
         }

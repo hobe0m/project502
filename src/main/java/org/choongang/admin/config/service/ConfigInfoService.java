@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
 import lombok.RequiredArgsConstructor;
 import org.choongang.admin.config.entities.Configs;
 import org.choongang.admin.config.repositories.ConfigsRepository;
@@ -39,7 +38,7 @@ public class ConfigInfoService {
         String jsonString = config.getData();
         try {
             T data = null;
-            if (clazz == null) { // TypeReference로 처리
+            if (clazz == null) { // TypeRefernce로 처리
                 data = om.readValue(jsonString, new TypeReference<T>() {});
             } else { // Class로 처리
                 data = om.readValue(jsonString, clazz);

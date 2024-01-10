@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,9 +31,10 @@ public class PagingTest {
 
         assertEquals(totalPages, pagination.getTotalPages());
     }
+
     @Test
     @DisplayName("페이징 쿼리스트링이 유지되는지 테스트")
-    void pageingWithRequestTest() {
+    void pagingWithRequestTest() {
         given(request.getQueryString())
                 .willReturn("?orderStatus=CASH&userNm=name&page=3");
 

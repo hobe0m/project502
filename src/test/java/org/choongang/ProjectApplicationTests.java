@@ -9,8 +9,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.test.context.TestPropertySource;
 
 @SpringBootTest
 class ProjectApplicationTests {
@@ -23,7 +21,7 @@ class ProjectApplicationTests {
 
 	@Test @Disabled
 	void contextLoads() {
-		Member member = memberRepository.findByUserId("user01").orElse(null);
+		Member member = memberRepository.findByUserId("user02").orElse(null);
 
 		Authorities authorities = new Authorities();
 		authorities.setMember(member);

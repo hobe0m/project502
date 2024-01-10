@@ -19,12 +19,11 @@ commonLib.ajaxLoad = function(method, url, params, responseType) {
 
     // resolve는 성공 시 데이터, reject는 실패 시 데이터
     return new Promise((resolve, reject) => {
-        const xhr = XMLHttpRequest();
-
-        xht.setHeaderProperty(tokenHeader, token);
+        const xhr = new XMLHttpRequest();
 
         xhr.open(method, url);
         xhr.setRequestHeader(tokenHeader, token);
+
         xhr.send(params); // 요청 body에 실릴 데이터, 키 = 값 & 키 = 값 형태로 쓰이고, FormData 객체(POST, PATCH, PUT)
 
         xhr.onreadystatechange = function() {

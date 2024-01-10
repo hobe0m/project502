@@ -1,4 +1,4 @@
-package org.choongang.admin.config;
+package org.choongang.admin.confg;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.choongang.admin.config.controllers.BasicConfig;
@@ -18,6 +18,7 @@ import java.util.Optional;
 @Transactional
 @TestPropertySource(properties = "spring.profiles.active=test")
 public class ConfigSaveTest {
+
     @Autowired
     private ConfigSaveService saveService;
 
@@ -32,7 +33,7 @@ public class ConfigSaveTest {
         config.setSiteDescription("사이트 설명");
         config.setSiteKeywords("사이트 키워드");
         config.setCssJsVersion(1);
-        config.setJoinTerms("회원 가입 약관");
+        config.setJoinTerms("회원가입 약관");
 
         saveService.save("basic", config);
 
@@ -43,5 +44,6 @@ public class ConfigSaveTest {
 
         System.out.println(opt.get());
     }
+
 
 }

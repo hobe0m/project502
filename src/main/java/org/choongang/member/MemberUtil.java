@@ -6,8 +6,6 @@ import org.choongang.member.entities.Authorities;
 import org.choongang.member.entities.Member;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 @RequiredArgsConstructor
 public class MemberUtil {
@@ -26,6 +24,7 @@ public class MemberUtil {
     }
 
     public boolean isLogin() {
+
         return getMember() != null;
     }
 

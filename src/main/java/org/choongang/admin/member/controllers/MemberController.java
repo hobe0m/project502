@@ -34,6 +34,7 @@ public class MemberController implements ExceptionProcessor {
 
         return Menu.getMenus("member");
     }
+
     @GetMapping
     public String list(@ModelAttribute MemberSearch search, Model model) {
         commonProcess("list", model);
@@ -52,6 +53,5 @@ public class MemberController implements ExceptionProcessor {
 
         model.addAttribute("subMenuCode", mode);
         model.addAttribute("pageTitle", pageTitle);
-
     }
 }

@@ -10,5 +10,4 @@ public class BasicConfig {
     private int cssJsVersion = 1;
     private String joinTerms = "";
     private String thumbSize = "";
-
 }

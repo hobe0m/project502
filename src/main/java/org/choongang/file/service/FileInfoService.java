@@ -13,7 +13,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import javax.swing.plaf.PanelUI;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,11 +30,12 @@ public class FileInfoService {
     private final HttpServletRequest request;
 
     public FileInfo get(Long seq) {
-        FileInfo fileInfo = repository.findById(seq).orElseThrow(FileNotFoundException::new);
-        // 아이디가 없으면 에러 메세지를 생성해서 보낸다.
+        FileInfo fileInfo = repository.findById(seq)
+                .orElseThrow(FileNotFoundException::new);
 
-        addFileInfo(fileInfo); // 파일 추가(추가되는 파일) 정보 처리
-        
+
+        addFileInfo(fileInfo); // 파일 추가 정보 처리
+
         return fileInfo;
     }
 
@@ -49,7 +49,6 @@ public class FileInfoService {
      *               UNDONE : 미완료된 파일
      * @return
      */
-
     public List<FileInfo> getList(String gid, String location, String mode) {
         QFileInfo fileInfo = QFileInfo.fileInfo;
 
@@ -58,11 +57,11 @@ public class FileInfoService {
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(fileInfo.gid.eq(gid));
 
-        if(StringUtils.hasText(location)) {
+        if (StringUtils.hasText(location)) {
             builder.and(fileInfo.location.eq(location));
         }
 
-        if(mode.equals("ALL")) {
+        if (!mode.equals("ALL")) {
             builder.and(fileInfo.done.eq(mode.equals("DONE")));
         }
 
@@ -91,11 +90,10 @@ public class FileInfoService {
 
     /**
      * 파일 추가 정보 처리
-     *         - 파일 서버 경로(filePath)
-     *         - 파일 URL(fileUrl)
+     *      - 파일 서버 경로(filePath)
+     *      - 파일 URL(fileUrl)
      * @param fileInfo
      */
-
     public void addFileInfo(FileInfo fileInfo) {
         long seq = fileInfo.getSeq();
         long dir = seq % 10L;
@@ -107,7 +105,7 @@ public class FileInfoService {
 
         fileInfo.setFilePath(filePath);
         fileInfo.setFileUrl(fileUrl);
-        /* 파일 경로, URL S */
+        /* 파일 경로, URL E */
 
         /* 썸네일 경로, URL S */
         List<String> thumbsPath = new ArrayList<>();
@@ -116,9 +114,9 @@ public class FileInfoService {
         String thumbDir = getThumbDir(seq);
         String thumbUrl = getThumbUrl(seq);
 
-        File _thumbsDir = new File(thumbDir);
-        if(_thumbsDir.exists()) {
-            for(String thumbFileName : _thumbsDir.list()) {
+        File _thumbDir = new File(thumbDir);
+        if (_thumbDir.exists()) {
+            for (String thumbFileName : _thumbDir.list()) {
                 thumbsPath.add(thumbDir + "/" + thumbFileName);
                 thumbsUrl.add(thumbUrl + "/" + thumbFileName);
             }
@@ -126,35 +124,35 @@ public class FileInfoService {
 
         fileInfo.setThumbsPath(thumbsPath);
         fileInfo.setThumbsUrl(thumbsUrl);
-        /* 썸네일 경로, URL E */
+        /* 썸네일 경로, URL E*/
     }
 
     /**
-     * 파일 별 특정 사이즈 썸네일 조회
+     * 파일별 특정 사이즈 썸네일 조회
+     *
      * @param seq
      * @param width
      * @param height
      * @return
      */
-    public String[] getThumb(Long seq ,int width, int height) {
+    public String[] getThumb(long seq, int width, int height) {
         FileInfo fileInfo = get(seq);
-        String filetype =  fileInfo.getFiletype(); // 파일이 이미지 인 지 체크
-        if (filetype.indexOf("image/") == -1) {
+        String fileType = fileInfo.getFileType(); // 파일이 이미지인지 체크
+        if (fileType.indexOf("image/") == -1) {
             return null;
         }
 
-            String fileName = seq + fileInfo.getExtension();
+        String fileName = seq + fileInfo.getExtension();
 
         String thumbDir = getThumbDir(seq);
         File _thumbDir = new File(thumbDir);
-        if(!_thumbDir.exists()) {
+        if (!_thumbDir.exists()) {
             _thumbDir.mkdirs();
         }
 
         String thumbPath = String.format("%s/%d_%d_%s", thumbDir, width, height, fileName);
-
         File _thumbPath = new File(thumbPath);
-        if(!_thumbPath.exists()) { // 썸네일 이미지가 없는 경우
+        if (!_thumbPath.exists()) { // 썸네일 이미지가 없는 경우
             try {
                 Thumbnails.of(new File(fileInfo.getFilePath()))
                         .size(width, height)
@@ -167,19 +165,15 @@ public class FileInfoService {
         String thumbUrl = String.format("%s/%d_%d_%s", getThumbUrl(seq), width, height, fileName);
 
         return new String[] { thumbPath, thumbUrl };
-
     }
 
-    public String getThumbDir(Long seq) {
+    public String getThumbDir(long seq) {
 
         String thumbDirCommon = "thumbs/" + (seq % 10L) + "/" + seq;
         return fileProperties.getPath() + thumbDirCommon;
-
     }
 
-
-    public String getThumbUrl(Long seq) {
-
+    public String getThumbUrl(long seq) {
         String thumbDirCommon = "thumbs/" + (seq % 10L) + "/" + seq;
         return fileProperties.getUrl() + thumbDirCommon;
     }

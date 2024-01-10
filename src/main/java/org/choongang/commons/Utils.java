@@ -16,8 +16,7 @@ import java.util.ResourceBundle;
 @Component
 @RequiredArgsConstructor
 public class Utils {
-    
-    // 의존성 추가
+
     private final HttpServletRequest request;
     private final HttpSession session;
     private final FileInfoService fileInfoService;
@@ -70,7 +69,6 @@ public class Utils {
 
     public static String getMessage(String code) {
         return getMessage(code, null);
-
     }
 
     /**
@@ -89,9 +87,10 @@ public class Utils {
 
     /**
      * 썸네일 이미지 사이즈 설정
+     *
      * @return
      */
-    public List<int[]> getThumbsSize() {
+    public List<int[]> getThumbSize() {
         BasicConfig config = (BasicConfig)request.getAttribute("siteConfig");
         String thumbSize = config.getThumbSize(); // \r\n
         String[] thumbsSize = thumbSize.split("\\n");
@@ -115,8 +114,8 @@ public class Utils {
 
     public String printThumb(long seq, int width, int height, String className) {
         String[] data = fileInfoService.getThumb(seq, width, height);
-        if(data != null) {
-            String cls = StringUtils.hasText(className) ? " class='" + className + "'" : "" ;
+        if (data != null) {
+            String cls = StringUtils.hasText(className) ? " class='" + className + "'" : "";
             String image = String.format("<img src='%s'%s>", data[1], cls);
             return image;
         }
@@ -129,7 +128,7 @@ public class Utils {
     }
 
     /**
-     * 0이하 정수인 경우 1이상 정수로 대체
+     * 0이하 정수 인 경우 1이상 정수로 대체
      *
      * @param num
      * @param replace
@@ -139,20 +138,3 @@ public class Utils {
         return num < 1 ? replace : num;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

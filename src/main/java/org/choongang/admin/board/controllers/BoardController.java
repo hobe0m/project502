@@ -55,7 +55,7 @@ public class BoardController implements ExceptionProcessor {
     }
 
     /**
-     * 게시판 등록 / 수정 처리
+     * 게시판 등록/수정 처리
      *
      * @return
      */
@@ -65,9 +65,10 @@ public class BoardController implements ExceptionProcessor {
 
         commonProcess(mode, model);
 
-        if(errors.hasErrors()) {
+        if (errors.hasErrors()) {
             return "admin/board/" + mode;
         }
+
 
         return "redirect:/admin/board";
     }
@@ -108,11 +109,12 @@ public class BoardController implements ExceptionProcessor {
         List<String> addCommonScript = new ArrayList<>();
         List<String> addScript = new ArrayList<>();
 
-        if (mode.equals("add") || mode.equals("edit")) { // 게시판 등록 혹은 수정일 때
+        if (mode.equals("add") || mode.equals("edit")) { // 게시판 등록 또는 수정
             addCommonScript.add("ckeditor5/ckeditor");
+            addCommonScript.add("fileManager");
+
             addScript.add("board/form");
         }
-
 
         model.addAttribute("pageTitle", pageTitle);
         model.addAttribute("subMenuCode", mode);
